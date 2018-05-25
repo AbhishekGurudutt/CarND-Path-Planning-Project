@@ -87,6 +87,23 @@ A really helpful resource for doing this project and creating smooth trajectorie
     git checkout e94b6e1
     ```
 
+---
+
+## Reflection
+The code for path planning can be seen in `src/main.cpp`. From line 168, * main * function starts, which contains messaging service between the code and the simulator, and also to execute the path planning logic.
+
+### Prediction
+
+The part of code which deals with the sensor fusion data. The data from external sensors provides information about the surroundings. Based upon this data, we can get to know if there are any cars in our surroundings, like a car in front of us going at lower speeds or if there is a car in the right or left lane. A distance of 30 meters is considered as a safe distance to maintain between other cars, so if there is a car in the same lane in front and the car is closing by and reaches less than 30 meters, then we predict that its no more safe to go at the current speed and in the current lane.
+
+### Behavior
+
+This is the decision part of the algorithm. Based upon the sensor data received and the prediction step, we should take a decision if we have to maintain the same lane when we find a car in front of us, and do we have to slow down or speed up or maintain speed. If there is any car in front and in the same lane, then free space is checked in left and right lane, before changing the lane. Cars on rear side of car on either sides of lane are also checked for safe lane change. If the lane change is calculated to be not safe, then the speed of the vehicle is reduced to maintain a safe distance from the front vehicle. For a safe acceleration and deceleration wihtout any jerks, the difference in speed is provided in small increments.
+
+### Trajectory
+
+Based on the speed, lane decison, past points and present car coordinates, this part of the code calculates trajectory. The coordinates are transofrmed to local car coordinates and spline library is used for calculation. Past two points and the farthest two points are used by spline to calculate the trajectory. The trajectory points in between are calculated by spline. The output of the spline is smooth during lane change as well.
+---
 ## Editor Settings
 
 We've purposefully kept editor configuration files out of this repo in order to
